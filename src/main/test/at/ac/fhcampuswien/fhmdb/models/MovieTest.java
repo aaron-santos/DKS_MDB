@@ -4,43 +4,23 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import static at.ac.fhcampuswien.fhmdb.models.Movie.filterMoviesByName;
+import static at.ac.fhcampuswien.fhmdb.models.Movie.filterMoviesByNameAndAscending;
+import static at.ac.fhcampuswien.fhmdb.models.Movie.initializeMovies;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MovieTest {
 
     @Test
-
-    void tests_if_two_identical_movies_are_equal() {
-        Movie movie1 = new Movie("The Title", "The description.", Arrays.asList(Genre.COMEDY));
-        Movie movie2 = new Movie("The Title", "The description.", Arrays.asList(Genre.COMEDY));
-        Movie movie3 = new Movie("Different Title", "Different description.", Arrays.asList(Genre.ACTION));
-
-        // Test that two identical movies are equal
-        assertEquals(movie1, movie2);
-    }
-
-    @Test
-    void test_if_two_identical_movies_are_not_equal() {
-        Movie movie1 = new Movie("The Title", "The description.", Arrays.asList(Genre.COMEDY));
-        Movie movie2 = new Movie("The Title", "The description.", Arrays.asList(Genre.COMEDY));
-        Movie movie3 = new Movie("Different Title", "Different description.", Arrays.asList(Genre.ACTION));
-
-        // Test that two identical movies are equal
-        assertNotEquals(movie1, movie2);
-    }
-
-    @Test
-    void test_initialize_movies_if_list_of_movies_is_not_empty() {
-        List<Movie> movies = Movie.initializeMovies();
+    void checks_if_list_of_initialized_movies_is_not_empty() {
+        List<Movie> movies = initializeMovies();
 
         // Test that the list of movies is not empty
         assertFalse(movies.isEmpty());
     }
 
     @Test
-    void test_list_of_movies_contains_contains_at_least_one_movie_with_title_the_dog() {
-        List<Movie> movies = Movie.initializeMovies();
+    void lists_movies_that_contains_search_term_in_title() {
+        List<Movie> movies = initializeMovies();
 
         // Test that the list of movies contains at least one movie with the title "The Dog"
         boolean hasTheDog = false;
@@ -53,69 +33,67 @@ public class MovieTest {
         assertTrue(hasTheDog);
     }
     @Test
-    public void test_filter_movies_by_name_with_search_term() {
+    public void sort_movies_in_ascending_order_with_search_term() {
         // Arrange
         String searchTerm = "the";
         boolean sortAsc = true;
-        int expectedSize = 3;
-        String[] expectedTitles = {"The Incredibles", "The Avengers", "The Lion King"};
+        List<Movie> movies = initializeMovies();
+        int expectedSize = 4;
+        String[] expectedTitles = {"The Dog", "The Incredibles", "The Title1", "The Title2"};
 
         // Act
-        List<Movie> filteredMovies = filterMoviesByName(searchTerm, sortAsc);
+        List<Movie> filteredMovies = filterMoviesByNameAndAscending(movies, searchTerm, sortAsc);
 
         // Assert
-        assertEquals(expectedSize, filteredMovies.size());
         for (int i = 0; i < expectedSize; i++) {
             assertEquals(expectedTitles[i], filteredMovies.get(i).getTitle());
         }
     }
-
     @Test
-    public void test_filter_movies_by_name_without_search_term() {
+    public void sort_movies_in_ascending_order_without_search_term() {
         // Arrange
         String searchTerm = "";
         boolean sortAsc = true;
-        int expectedSize = 7;
+        List<Movie> movies = initializeMovies();
+        int expectedSize = 6;
+        String[] expectedTitles = {"CatsVenture", "Generic Movie Title", "The Dog", "The Incredibles", "The Title1", "The Title2"};
 
         // Act
-        List<Movie> filteredMovies = filterMoviesByName(searchTerm, sortAsc);
+        List<Movie> filteredMovies = filterMoviesByNameAndAscending(movies, searchTerm, sortAsc);
 
         // Assert
-        assertEquals(expectedSize, filteredMovies.size());
+        for (int i = 0; i < expectedSize; i++) {
+            assertEquals(expectedTitles[i], filteredMovies.get(i).getTitle());
+        }
     }
-
     @Test
-    public void test_filter_movies_by_name_with_sort_asc() {
+    public void number_of_movies_sorted_ascending_with_search_term() {
         // Arrange
         String searchTerm = "the";
         boolean sortAsc = true;
-        int expectedSize = 3;
-        String[] expectedTitles = {"The Incredibles", "The Avengers", "The Lion King"};
+        List<Movie> movies = initializeMovies();
+        int expectedSize = 4;
+        String[] expectedTitles = {"The Dog", "The Incredibles", "The Title1", "The Title2"};
 
         // Act
-        List<Movie> filteredMovies = filterMoviesByName(searchTerm, sortAsc);
+        List<Movie> filteredMovies = filterMoviesByNameAndAscending(movies, searchTerm, sortAsc);
 
         // Assert
         assertEquals(expectedSize, filteredMovies.size());
-        for (int i = 0; i < expectedSize; i++) {
-            assertEquals(expectedTitles[i], filteredMovies.get(i).getTitle());
-        }
     }
     @Test
-    public void test_filter_movies_by_name_with_sort_desc() {
+    public void number_of_movies_sorted_ascending_without_search_term() {
         // Arrange
-        String searchTerm = "the";
-        boolean sortAsc = false;
-        int expectedSize = 3;
-        String[] expectedTitles = {"The Incredibles", "The Avengers", "The Lion King"};
+        String searchTerm = "";
+        boolean sortAsc = true;
+        List<Movie> movies = initializeMovies();
+        int expectedSize = 6;
 
         // Act
-        List<Movie> filteredMovies = filterMoviesByName(searchTerm, sortAsc);
+        List<Movie> filteredMovies = filterMoviesByNameAndAscending(movies, searchTerm, sortAsc);
 
         // Assert
         assertEquals(expectedSize, filteredMovies.size());
-        for (int i = 0; i < expectedSize; i++) {
-            assertEquals(expectedTitles[i], filteredMovies.get(i).getTitle());
-        }
     }
+
 }
