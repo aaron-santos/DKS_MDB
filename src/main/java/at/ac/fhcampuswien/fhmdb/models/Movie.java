@@ -44,7 +44,7 @@ public class Movie {
         // TODO add some dummy data here
         movies.add(new Movie(
                 "The Dog",
-                "Movie about a cute dog.",
+                "Movie about a cute dog.Movie about a cute dog.Movie about a cute dog.Movie about a cute dog.Movie about a cute dog.Movie about a cute dog.Movie about a cute dog.Movie about a cute dog.Movie about a cute dog.",
                 Arrays.asList(Genre.ANIMATION, Genre.FAMILY)
         ));
         movies.add(new Movie(
@@ -62,6 +62,22 @@ public class Movie {
                 "The description.",
                 Arrays.asList(Genre.COMEDY)
         ));
+        movies.add(new Movie(
+                "The Title",
+                "The description.",
+                Arrays.asList(Genre.COMEDY)
+        ));
+        movies.add(new Movie(
+                "The Title",
+                "The description.",
+                Arrays.asList(Genre.COMEDY)
+        ));
+        movies.add(new Movie(
+                "The Title",
+                "The description.",
+                Arrays.asList(Genre.COMEDY)
+        ));
+
 
         return movies;
     }

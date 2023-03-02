@@ -9,10 +9,15 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
+
 public class MovieCell extends ListCell<Movie> {
     private final Label title = new Label();
     private final Label detail = new Label();
     private final VBox layout = new VBox(title, detail);
+
+    public static ArrayList<Label> titlesList = new ArrayList<Label>();
+    public static ArrayList<Label> detailsList = new ArrayList<Label>();
 
     @Override
     protected void updateItem(Movie movie, boolean empty) {
@@ -37,12 +42,14 @@ public class MovieCell extends ListCell<Movie> {
 
             // layout
             title.fontProperty().set(title.getFont().font(20));
-            detail.setMaxWidth(this.getScene().getWidth() - 30);
+            detail.setMaxWidth(this.getScene().getWidth() - 40);
             detail.setWrapText(true);
             layout.setPadding(new Insets(10));
             layout.spacingProperty().set(10);
             layout.alignmentProperty().set(javafx.geometry.Pos.CENTER_LEFT);
             setGraphic(layout);
+            titlesList.add(title);
+            detailsList.add(detail);
         }
     }
 }
