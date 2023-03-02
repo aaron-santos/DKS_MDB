@@ -31,7 +31,7 @@ public class FhmdbApplication extends Application {
         sceneWidth.addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                double newWidth = newValue.doubleValue() - 5    0;
+                double newWidth = newValue.doubleValue() - 50;
                 for (Label title : titlesList) {
                     title.setMaxWidth(newWidth);
                 }

@@ -2,6 +2,7 @@ package at.ac.fhcampuswien.fhmdb.models;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class Movie {
@@ -58,27 +59,37 @@ public class Movie {
                 Arrays.asList(Genre.MYSTERY)
         ));
         movies.add(new Movie(
-                "The Title",
+                "The Incredibles",
+                "The description0.",
+                Arrays.asList(Genre.COMEDY)
+        ));
+        movies.add(new Movie(
+                "The Title1",
                 "The description.",
                 Arrays.asList(Genre.COMEDY)
         ));
         movies.add(new Movie(
-                "The Title",
+                "The Title2",
                 "The description.",
                 Arrays.asList(Genre.COMEDY)
         ));
-        movies.add(new Movie(
-                "The Title",
-                "The description.",
-                Arrays.asList(Genre.COMEDY)
-        ));
-        movies.add(new Movie(
-                "The Title",
-                "The description.",
-                Arrays.asList(Genre.COMEDY)
-        ));
-
 
         return movies;
+    }
+    public static List<Movie> filterMoviesByNameAndAscending(List<Movie> movies, String searchTerm, boolean sortAsc) {
+        List<Movie> filteredMovies = new ArrayList<>();
+
+        for (Movie movie : movies) {
+            if (movie.getTitle().toLowerCase().contains(searchTerm.toLowerCase())) {
+                filteredMovies.add(movie);
+            }
+        }
+
+        if (sortAsc) {
+            filteredMovies.sort(Comparator.comparing(Movie::getTitle));
+        } else {
+            filteredMovies.sort(Comparator.comparing(Movie::getTitle).reversed());
+        }
+        return filteredMovies;
     }
 }
