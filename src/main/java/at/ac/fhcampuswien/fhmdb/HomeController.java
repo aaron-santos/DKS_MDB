@@ -2,83 +2,109 @@ package at.ac.fhcampuswien.fhmdb;
 
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
-import at.ac.fhcampuswien.fhmdb.models.SortState;
-import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXListView;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TextField;
+import javafx.geometry.Insets;
+import javafx.scene.control.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static at.ac.fhcampuswien.fhmdb.models.Movie.initializeMovies;
+import static at.ac.fhcampuswien.fhmdb.models.Genre.normalizeGenre;
+import static at.ac.fhcampuswien.fhmdb.models.Movie.*;
 
 public class HomeController implements Initializable {
     @FXML
-    public JFXButton searchBtn;
+    public Button searchBtn;
 
     @FXML
     public TextField searchField;
 
     @FXML
-    public JFXListView movieListView;
+    public ListView movieListView;
 
     @FXML
-    public JFXComboBox genreComboBox;
+    public ComboBox genreComboBox;
 
     @FXML
-    public JFXButton sortBtn;
+    public Button sortBtn;
 
-    public List<Movie> allMovies = initializeMovies();
-
-    public final ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
-
-    public SortState sortState = SortState.NONE;
-
+    public static ArrayList<Label> titlesList = new ArrayList<Label>();
+    public static ArrayList<Label> descriptionsList = new ArrayList<Label>();
+    private Genre selectedGenre;
+    boolean ascending = true;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        observableMovies.addAll(allMovies);         // add dummy data to observable list
-
-        // initialize UI stuff
-        movieListView.setItems(observableMovies);   // set data of observable list to list view
-        movieListView.setCellFactory(movieListView -> new MovieCell()); // use custom cell factory to display data
+        createMovieCells(movies);
 
         // TODO add genre filter items with genreComboBox.getItems().addAll(...)
         genreComboBox.setPromptText("Filter by Genre");
         genreComboBox.getItems().addAll(Genre.values());
 
-
         // TODO add event handlers to buttons and call the regarding methods
         // either set event handlers in the fxml file (onAction) or add them here
         // Sort button example:
         sortBtn.setOnAction(actionEvent -> {
+            movieListView.getItems().clear();
             if(sortBtn.getText().equals("Sort (asc)")) {
-                // TODO sort observableMovies ascending
-
                 sortBtn.setText("Sort (desc)");
             } else {
-                // TODO sort observableMovies descending
                 sortBtn.setText("Sort (asc)");
             }
+            ascending = !ascending;
+            createMovieCells(filterMoviesByNameAndAscending(movies, searchField.getText(), ascending));
+        });
+        searchBtn.setOnAction(actionEvent -> {
+            createMovieCells(filterMoviesByNameAndAscending(movies, searchField.getText(), ascending));
+        });
+
+        ObservableValue<Genre> genreObserver = genreComboBox.valueProperty();
+
+        genreObserver.addListener((observable, oldValue, newValue) -> {
+            System.out.println("Selected value: " + normalizeGenre(String.valueOf(newValue)));
+            createMovieCells(
+                    filterMoviesByGenre(
+                            filterMoviesByNameAndAscending(movies, searchField.getText(), ascending),
+                            newValue));
         });
     }
 
+    private void createMovieCells(List<Movie> moviesList) {
+        movieListView.getItems().clear();
+        for (Movie movie : moviesList) {
+            VBox vbox = new VBox();
+            Label title = new Label(movie.getTitle());
+            Label description = new Label();
 
-    public void initializeState(){
-        observableMovies.clear();
-        observableMovies.addAll(allMovies);
-    }
+            vbox.getChildren().addAll(title, description);
+            movieListView.getItems().add(vbox);
 
-    public void sortMovies(){
-        observableMovies.sort(Comparator.comparing(Movie::getTitle));
-        sortState = SortState.ASCENDING;
+            title.getStyleClass().add("text-yellow");
+            description.getStyleClass().add("text-white");
+            vbox.setBackground(new Background(new BackgroundFill(Color.web("#454545"), null, null)));
+
+            description.setText(
+                    movie.getDescription() != null
+                            ? movie.getDescription()
+                            : "No description available"
+            );
+
+            title.fontProperty().set(title.getFont().font(20));
+            description.setMaxWidth(890 - 40);
+            description.setWrapText(true);
+            vbox.setPadding(new Insets(10));
+            vbox.spacingProperty().set(10);
+            vbox.alignmentProperty().set(javafx.geometry.Pos.CENTER_LEFT);
+
+            titlesList.add(title);
+            descriptionsList.add(description);
+        }
     }
 }

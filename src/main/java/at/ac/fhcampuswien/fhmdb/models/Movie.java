@@ -1,15 +1,12 @@
 package at.ac.fhcampuswien.fhmdb.models;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class Movie {
     private String title;
     private String description;
-    // TODO add more properties here
     private List<Genre> genres;
+    public static List<Movie> movies = new ArrayList<Movie>();
 
     public Movie(String title, String description, List<Genre> genres) {
         this.title = title;
@@ -40,9 +37,7 @@ public class Movie {
 
     public List<Genre> getGenres() { return genres; }
 
-    public static List<Movie> initializeMovies(){
-        List<Movie> movies = new ArrayList<>();
-        // TODO add some dummy data here
+    public static void initializeMovies(){
         movies.add(new Movie(
                 "The Dog",
                 "Movie about a cute dog.Movie about a cute dog.Movie about a cute dog.Movie about a cute dog.Movie about a cute dog.Movie about a cute dog.Movie about a cute dog.Movie about a cute dog.Movie about a cute dog.",
@@ -59,23 +54,12 @@ public class Movie {
                 Arrays.asList(Genre.MYSTERY)
         ));
         movies.add(new Movie(
-                "The Incredibles",
-                "The description0.",
-                Arrays.asList(Genre.COMEDY)
-        ));
-        movies.add(new Movie(
-                "The Title1",
+                "The Title",
                 "The description.",
                 Arrays.asList(Genre.COMEDY)
         ));
-        movies.add(new Movie(
-                "The Title2",
-                "The description.",
-                Arrays.asList(Genre.COMEDY)
-        ));
-
-        return movies;
     }
+
     public static List<Movie> filterMoviesByNameAndAscending(List<Movie> movies, String searchTerm, boolean sortAsc) {
         List<Movie> filteredMovies = new ArrayList<>();
 
@@ -92,4 +76,17 @@ public class Movie {
         }
         return filteredMovies;
     }
+
+    public static List<Movie> filterMoviesByGenre(List<Movie> movies, Genre genre) {
+        List<Movie> filteredMovies = new ArrayList<>();
+
+        for (Movie movie : movies) {
+            if (movie.getGenres().contains(genre)) {
+                filteredMovies.add(movie);
+            }
+        }
+
+        return filteredMovies;
+    }
+
 }

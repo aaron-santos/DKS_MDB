@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.fhmdb;
 
+import at.ac.fhcampuswien.fhmdb.models.Movie;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -11,10 +12,11 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Objects;
 
-import static at.ac.fhcampuswien.fhmdb.ui.MovieCell.detailsList;
-import static at.ac.fhcampuswien.fhmdb.ui.MovieCell.titlesList;
+import static at.ac.fhcampuswien.fhmdb.HomeController.*;
+import static at.ac.fhcampuswien.fhmdb.models.Movie.initializeMovies;
 
 public class FhmdbApplication extends Application {
+    public static int sceneWidth;
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(FhmdbApplication.class.getResource("home-view.fxml"));
@@ -23,8 +25,6 @@ public class FhmdbApplication extends Application {
         stage.setTitle("FHMDb");
         stage.setScene(scene);
         stage.show();
-
-
 
         ObservableValue<Number> sceneWidth = stage.widthProperty();
 
@@ -35,14 +35,17 @@ public class FhmdbApplication extends Application {
                 for (Label title : titlesList) {
                     title.setMaxWidth(newWidth);
                 }
-                for (Label detail : detailsList) {
+                for (Label detail : descriptionsList) {
                     detail.setMaxWidth(newWidth);
                 }
             }
         });
+
+
     }
 
     public static void main(String[] args) {
+        initializeMovies();
         launch();
     }
 }
