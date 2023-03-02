@@ -17,12 +17,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static at.ac.fhcampuswien.fhmdb.models.Genre.normalizeGenre;
+import static at.ac.fhcampuswien.fhmdb.models.Genre.normalize;
 import static at.ac.fhcampuswien.fhmdb.models.Movie.*;
 
 public class HomeController implements Initializable {
     @FXML
     public Button searchBtn;
+
+    @FXML
+    public Button resetFilter;
 
     @FXML
     public TextField searchField;
@@ -36,21 +39,20 @@ public class HomeController implements Initializable {
     @FXML
     public Button sortBtn;
 
+    boolean isSorted = false;
+
     public static ArrayList<Label> titlesList = new ArrayList<Label>();
     public static ArrayList<Label> descriptionsList = new ArrayList<Label>();
     private Genre selectedGenre;
-    boolean ascending = true;
+    boolean isAscending = true;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         createMovieCells(movies);
 
-        // TODO add genre filter items with genreComboBox.getItems().addAll(...)
         genreComboBox.setPromptText("Filter by Genre");
         genreComboBox.getItems().addAll(Genre.values());
 
-        // TODO add event handlers to buttons and call the regarding methods
-        // either set event handlers in the fxml file (onAction) or add them here
-        // Sort button example:
+
         sortBtn.setOnAction(actionEvent -> {
             movieListView.getItems().clear();
             if(sortBtn.getText().equals("Sort (asc)")) {
@@ -58,22 +60,31 @@ public class HomeController implements Initializable {
             } else {
                 sortBtn.setText("Sort (asc)");
             }
-            ascending = !ascending;
-            createMovieCells(filterMoviesByNameAndAscending(movies, searchField.getText(), ascending));
+            isAscending = !isAscending;
+            updateList();
         });
+
         searchBtn.setOnAction(actionEvent -> {
-            createMovieCells(filterMoviesByNameAndAscending(movies, searchField.getText(), ascending));
+            updateList();
         });
 
         ObservableValue<Genre> genreObserver = genreComboBox.valueProperty();
 
         genreObserver.addListener((observable, oldValue, newValue) -> {
-            System.out.println("Selected value: " + normalizeGenre(String.valueOf(newValue)));
-            createMovieCells(
-                    filterMoviesByGenre(
-                            filterMoviesByNameAndAscending(movies, searchField.getText(), ascending),
-                            newValue));
+            System.out.println("Selected value: " + normalize(String.valueOf(newValue)));
+            selectedGenre = newValue;
         });
+
+        resetFilter.setOnAction(actionEvent -> {
+            genreComboBox.getSelectionModel().clearSelection();
+            updateList();
+        });
+    }
+
+    private void updateList() {
+        List<Movie> filteredList = filterMoviesByEverything(movies, searchField.getText(), isAscending, String.valueOf(selectedGenre));
+        createMovieCells(filteredList);
+        isSorted = filteredList.size() != movies.size();
     }
 
     private void createMovieCells(List<Movie> moviesList) {

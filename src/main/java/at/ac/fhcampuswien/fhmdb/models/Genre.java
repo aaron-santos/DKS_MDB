@@ -41,7 +41,7 @@ public enum Genre {
         return sb.toString();
     }
 
-    public static String normalizeGenre(String genreString) {
+    public static String normalize(String genreString) {
         return genreString.replace(" ", "_").toUpperCase();
     }
 
