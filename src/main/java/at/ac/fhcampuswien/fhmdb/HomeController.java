@@ -71,7 +71,6 @@ public class HomeController implements Initializable {
         ObservableValue<Genre> genreObserver = genreComboBox.valueProperty();
 
         genreObserver.addListener((observable, oldValue, newValue) -> {
-            System.out.println("Selected value: " + normalize(String.valueOf(newValue)));
             selectedGenre = newValue;
         });
 
