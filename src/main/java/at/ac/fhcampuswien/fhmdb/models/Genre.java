@@ -20,5 +20,29 @@ public enum Genre {
     SPORT,
     THRILLER,
     WAR,
-    WESTERN
+    WESTERN;
+
+    @Override
+    public String toString() {
+        String genreName = name().toLowerCase().replaceAll("_", " ");
+        StringBuilder sb = new StringBuilder();
+        boolean nextIsUpper = true;
+        for (char c : genreName.toCharArray()) {
+            if (c == ' ') {
+                nextIsUpper = true;
+                sb.append(c);
+            } else if (nextIsUpper) {
+                sb.append(Character.toUpperCase(c));
+                nextIsUpper = false;
+            } else {
+                sb.append(Character.toLowerCase(c));
+            }
+        }
+        return sb.toString();
+    }
+
+    public static String normalizeGenre(String genreString) {
+        return genreString.replace(" ", "_").toUpperCase();
+    }
+
 }
