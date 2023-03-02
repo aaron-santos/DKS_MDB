@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 
+import static at.ac.fhcampuswien.fhmdb.models.Movie.filterMoviesByName;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MovieTest {
@@ -51,5 +52,70 @@ public class MovieTest {
         }
         assertTrue(hasTheDog);
     }
+    @Test
+    public void test_filter_movies_by_name_with_search_term() {
+        // Arrange
+        String searchTerm = "the";
+        boolean sortAsc = true;
+        int expectedSize = 3;
+        String[] expectedTitles = {"The Incredibles", "The Avengers", "The Lion King"};
 
+        // Act
+        List<Movie> filteredMovies = filterMoviesByName(searchTerm, sortAsc);
+
+        // Assert
+        assertEquals(expectedSize, filteredMovies.size());
+        for (int i = 0; i < expectedSize; i++) {
+            assertEquals(expectedTitles[i], filteredMovies.get(i).getTitle());
+        }
+    }
+
+    @Test
+    public void test_filter_movies_by_name_without_search_term() {
+        // Arrange
+        String searchTerm = "";
+        boolean sortAsc = true;
+        int expectedSize = 7;
+
+        // Act
+        List<Movie> filteredMovies = filterMoviesByName(searchTerm, sortAsc);
+
+        // Assert
+        assertEquals(expectedSize, filteredMovies.size());
+    }
+
+    @Test
+    public void test_filter_movies_by_name_with_sort_asc() {
+        // Arrange
+        String searchTerm = "the";
+        boolean sortAsc = true;
+        int expectedSize = 3;
+        String[] expectedTitles = {"The Incredibles", "The Avengers", "The Lion King"};
+
+        // Act
+        List<Movie> filteredMovies = filterMoviesByName(searchTerm, sortAsc);
+
+        // Assert
+        assertEquals(expectedSize, filteredMovies.size());
+        for (int i = 0; i < expectedSize; i++) {
+            assertEquals(expectedTitles[i], filteredMovies.get(i).getTitle());
+        }
+    }
+    @Test
+    public void test_filter_movies_by_name_with_sort_desc() {
+        // Arrange
+        String searchTerm = "the";
+        boolean sortAsc = false;
+        int expectedSize = 3;
+        String[] expectedTitles = {"The Incredibles", "The Avengers", "The Lion King"};
+
+        // Act
+        List<Movie> filteredMovies = filterMoviesByName(searchTerm, sortAsc);
+
+        // Assert
+        assertEquals(expectedSize, filteredMovies.size());
+        for (int i = 0; i < expectedSize; i++) {
+            assertEquals(expectedTitles[i], filteredMovies.get(i).getTitle());
+        }
+    }
 }
