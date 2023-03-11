@@ -2,12 +2,9 @@ package at.ac.fhcampuswien.fhmdb.models;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
-import static at.ac.fhcampuswien.fhmdb.models.Movie.initializeMovies;
-import static at.ac.fhcampuswien.fhmdb.models.Movie.movies;
+import static at.ac.fhcampuswien.fhmdb.models.Movie.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MovieTest {
@@ -108,6 +105,25 @@ class MovieTest {
         assertEquals(expectedGenres, actualGenres);
     }
 
+    @Test
+    void ascending_with_no_search_term_and_no_genre(){
+        //given
+        List<Movie> testList = new ArrayList<>();
+        testList.add(new Movie("Matrix", "Matrix dummy description", Arrays.asList(Genre.ACTION, Genre.ADVENTURE, Genre.SCIENCE_FICTION)));
+        testList.add(new Movie("Spiderman", "Spiderman dummy description", Arrays.asList(Genre.FANTASY, Genre.SCIENCE_FICTION, Genre.FANTASY)));
+        testList.add(new Movie("Conjuring", "Conjuring dummy description", Arrays.asList(Genre.HORROR, Genre.THRILLER)));
+
+        //when
+        List<Movie> actual = filterMoviesAscending(testList, true);
+
+        //then
+        List<Movie> expected = new ArrayList<>();
+        expected.add(new Movie("Conjuring", "Conjuring dummy description", Arrays.asList(Genre.HORROR, Genre.THRILLER)));
+        expected.add(new Movie("Matrix", "Matrix dummy description", Arrays.asList(Genre.ACTION, Genre.ADVENTURE, Genre.SCIENCE_FICTION)));
+        expected.add(new Movie("Spiderman", "Spiderman dummy description", Arrays.asList(Genre.FANTASY, Genre.SCIENCE_FICTION, Genre.FANTASY)));
+        assertEquals(expected,actual);
+
+    }
 
 
 
