@@ -162,7 +162,7 @@ public class Movie {
         }
     }
 
-    private static List<Movie> filterMoviesByGenres(List<Movie> movies, String genre) {
+    public static List<Movie> filterMoviesByGenres(List<Movie> movies, String genre) {
         List<Movie> filteredMovies = new ArrayList<>();
 
         for (Movie movie : movies) {
