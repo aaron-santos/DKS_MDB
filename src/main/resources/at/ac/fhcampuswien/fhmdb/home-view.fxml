@@ -32,7 +32,7 @@
          <Button fx:id="sortBtn" styleClass="background-yellow" stylesheets="@styles.css" text="Sort (asc)" />
          <TextField fx:id="searchField" promptText="Search FHMDb" />
          <ComboBox fx:id="genreComboBox" styleClass="filter-combo-box" stylesheets="@styles.css" />
-         <Button fx:id="resetFilter" prefHeight="23.0" prefWidth="43.0" styleClass="background-yellow" stylesheets="@styles.css" text="X" />
+         <Button fx:id="resetFilter" prefHeight="23.0" prefWidth="70.0" styleClass="background-yellow" stylesheets="@styles.css" text="Reset" />
          <Button fx:id="searchBtn" styleClass="background-yellow" stylesheets="@styles.css" text="Filter" />
       </children>
       <VBox.margin>

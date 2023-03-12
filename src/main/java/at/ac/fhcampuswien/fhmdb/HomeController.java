@@ -76,6 +76,7 @@ public class HomeController implements Initializable {
 
         resetFilter.setOnAction(actionEvent -> {
             genreComboBox.getSelectionModel().clearSelection();
+            searchField.setText("");
             updateList();
         });
     }
@@ -92,18 +93,28 @@ public class HomeController implements Initializable {
             VBox vbox = new VBox();
             Label title = new Label(movie.getTitle());
             Label description = new Label();
+            Label genre = new Label();
 
-            vbox.getChildren().addAll(title, description);
+            vbox.getChildren().addAll(title, description, genre);
             movieListView.getItems().add(vbox);
 
             title.getStyleClass().add("text-yellow");
             description.getStyleClass().add("text-white");
+            genre.getStyleClass().add("text-white");
             vbox.setBackground(new Background(new BackgroundFill(Color.web("#454545"), null, null)));
 
             description.setText(
                     movie.getDescription() != null
                             ? movie.getDescription()
                             : "No description available"
+
+            );
+
+            genre.setText(
+                    movie.getGenres() != null
+                            ? movie.getGenres().toString().toUpperCase().replace("[", "").replace("]", "")
+                            : "No genres available"
+
             );
 
             title.fontProperty().set(title.getFont().font(20));
