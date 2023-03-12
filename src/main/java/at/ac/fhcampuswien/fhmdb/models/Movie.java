@@ -29,6 +29,7 @@ public class Movie {
         }
         return this.title.equals(other.title) && this.description.equals(other.description) && this.genres.equals(other.genres);
     }
+
     public String getTitle() {
         return title;
     }
@@ -91,27 +92,27 @@ public class Movie {
         return movies;
     }
 
-    public static List<Movie> filterMoviesByGenre(List<Movie> movies, String genre) {
-        List<Movie> filteredMovies = new ArrayList<>();
-
-        for (Movie movie : movies) {
-            if (String.valueOf(movie.getGenres()).toLowerCase().contains(normalize(genre).toLowerCase())) {
-                filteredMovies.add(movie);
-            }
-        }
-        return filteredMovies;
-    }
-
-    public static List<Movie> filterMoviesByDescription(List<Movie> movies, String searchTerm) {
-        List<Movie> filteredMovies = new ArrayList<>();
-
-        for (Movie movie : movies) {
-            if (movie.getDescription().toLowerCase().contains(searchTerm.toLowerCase())) {
-                filteredMovies.add(movie);
-            }
-        }
-        return filteredMovies;
-    }
+//    public static List<Movie> filterMoviesByGenre(List<Movie> movies, String genre) {
+//        List<Movie> filteredMovies = new ArrayList<>();
+//
+//        for (Movie movie : movies) {
+//            if (String.valueOf(movie.getGenres()).toLowerCase().contains(normalize(genre).toLowerCase())) {
+//                filteredMovies.add(movie);
+//            }
+//        }
+//        return filteredMovies;
+//    }
+//
+//    public static List<Movie> filterMoviesByDescription(List<Movie> movies, String searchTerm) {
+//        List<Movie> filteredMovies = new ArrayList<>();
+//
+//        for (Movie movie : movies) {
+//            if (movie.getDescription().toLowerCase().contains(searchTerm.toLowerCase())) {
+//                filteredMovies.add(movie);
+//            }
+//        }
+//        return filteredMovies;
+//    }
 
     public static List<Movie> filterMoviesByNameAndAscending(List<Movie> movies, String searchTerm, boolean sortAsc) {
         return filterMoviesAscending(filterMoviesByName(movies, searchTerm), sortAsc);
