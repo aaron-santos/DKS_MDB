@@ -102,6 +102,17 @@ public class Movie {
         return filteredMovies;
     }
 
+    public static List<Movie> filterMoviesByDescription(List<Movie> movies, String searchTerm) {
+        List<Movie> filteredMovies = new ArrayList<>();
+
+        for (Movie movie : movies) {
+            if (movie.getDescription().toLowerCase().contains(searchTerm.toLowerCase())) {
+                filteredMovies.add(movie);
+            }
+        }
+        return filteredMovies;
+    }
+
     public static List<Movie> filterMoviesByNameAndAscending(List<Movie> movies, String searchTerm, boolean sortAsc) {
         return filterMoviesAscending(filterMoviesByName(movies, searchTerm), sortAsc);
     }
@@ -110,9 +121,55 @@ public class Movie {
         if (Objects.equals(genre, "null")) {
             return filterMoviesByNameAndAscending(movies, searchTerm, sortAsc);
         } else {
-            return filterMoviesByGenre(filterMoviesAscending(filterMoviesByName(movies, searchTerm), sortAsc), genre);
+            return filterMoviesByGenres(filterMoviesAscending(filterMoviesByName(movies, searchTerm), sortAsc), genre);
         }
     }
 
+    public static List<Movie> filterMovies(List<Movie> listOfMovies, String searchTerm, String genre, boolean sortAsc)
+    {
+        List<Movie> filteredMovies = new ArrayList<>();
 
+        for (Movie movie: listOfMovies)
+        {
+            if (movie.getTitle().toLowerCase().contains(searchTerm) && !movie.isMovieInList(filteredMovies, movie))
+                filteredMovies.add(movie);
+            if (movie.getDescription().toLowerCase().contains(searchTerm) && !movie.isMovieInList(filteredMovies, movie))
+                filteredMovies.add(movie);
+        }
+
+        sortMovies(filteredMovies, sortAsc);
+
+        if (Objects.equals(genre, "null")) {
+            return filteredMovies;
+        } else {
+            return filterMoviesByGenres(filteredMovies, genre);
+        }
+    }
+
+    private boolean isMovieInList(List<Movie> listOfMovies, Movie movie)
+    {
+        if (listOfMovies.contains(movie))
+            return true;
+
+        return false;
+    }
+
+    private static void sortMovies(List<Movie> movies, boolean sortAsc) {
+        if (sortAsc) {
+            movies.sort(Comparator.comparing(Movie::getTitle));
+        } else {
+            movies.sort(Comparator.comparing(Movie::getTitle).reversed());
+        }
+    }
+
+    private static List<Movie> filterMoviesByGenres(List<Movie> movies, String genre) {
+        List<Movie> filteredMovies = new ArrayList<>();
+
+        for (Movie movie : movies) {
+            if (String.valueOf(movie.getGenres()).toLowerCase().contains(genre.toLowerCase())) {
+                filteredMovies.add(movie);
+            }
+        }
+        return filteredMovies;
+    }
 }

@@ -82,7 +82,7 @@ public class HomeController implements Initializable {
     }
 
     private void updateList() {
-        List<Movie> filteredList = filterMoviesByEverything(movies, searchField.getText(), isAscending, String.valueOf(selectedGenre));
+        List<Movie> filteredList = filterMovies(movies, searchField.getText(), String.valueOf(selectedGenre), isAscending);
         createMovieCells(filteredList);
         isSorted = filteredList.size() != movies.size();
     }
