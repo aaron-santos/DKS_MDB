@@ -13,6 +13,7 @@ class MovieTest {
     void checks_if_initialized_movies_is_not_empty(){
         //given
         movies.clear();
+        //when
         initializeMovies();
         //then
         assertFalse(movies.isEmpty());
@@ -233,7 +234,7 @@ class MovieTest {
                 Arrays.asList(Genre.SCIENCE_FICTION, Genre.THRILLER, Genre.ADVENTURE)
         ));
 
-        List<Movie> testListFilteredByTitle = filterMovies(testList, "Avengers", "Action", true);
+        List<Movie> testListFilteredByTitle = filterMoviesByEverything(testList, "Avengers", true, "Action");
 
         List<Movie> expected = new ArrayList<>();
         expected.add(new Movie(
